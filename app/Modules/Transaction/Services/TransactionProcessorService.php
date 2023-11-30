@@ -15,7 +15,7 @@ use Throwable;
 readonly class TransactionProcessorService
 {
     public function __construct(
-        private TransactionExceptionHandler $handler,
+        private TransactionExceptionHandler $exceptionHandler,
         private TransactionRepository $repository,
     ) {}
 
@@ -38,7 +38,7 @@ readonly class TransactionProcessorService
             $this->success($transaction);
         } catch (Throwable $t) {
             $message = $t instanceof AccountValidationException ? $t->getMessage() : null;
-            $this->handler->handle($transaction, $message);
+            $this->exceptionHandler->handle($transaction, $message);
 
             throw new TransactionProcessorException(previous: $t);
         }

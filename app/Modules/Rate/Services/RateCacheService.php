@@ -6,7 +6,7 @@ use App\Modules\Currency\Enums\Currency;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Cache;
 
-class RateCacheService
+readonly class RateCacheService
 {
     private const CACHE_TTL = 24 * 60 * 60; // 24H
     private const KEY_PREFIX = 'RATE';

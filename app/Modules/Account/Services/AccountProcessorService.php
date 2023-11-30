@@ -17,10 +17,15 @@ readonly class AccountProcessorService
     private const LOCK_SECONDS = 10;
 
     public function __construct(
-        private AccountValidationService $validation,
-        private AccountFundTransferService $transfer,
+        private AccountValidationService $validationService,
+        private AccountFundTransferService $transferService,
         private TransactionProcessorService $processor,
     ) {}
+
+    public function execute(): void
+    {
+
+    }
 
     /**
      * @throws AccountException
@@ -39,7 +44,7 @@ readonly class AccountProcessorService
             $transaction = TransactionFactory::create($parameters);
 
             // Before we process the transaction, we should validate it.
-            $this->validation->validate($transaction);
+            $this->validationService->validate($transaction);
         } catch (Throwable $t) {
             $lock->release();
 
@@ -48,7 +53,7 @@ readonly class AccountProcessorService
 
         try {
             $this->processor->process($transaction, function (Transaction $transaction) {
-                $this->transfer->transfer($transaction);
+                $this->transferService->transfer($transaction);
             });
         } catch (Throwable $t) {
             $lock->release();

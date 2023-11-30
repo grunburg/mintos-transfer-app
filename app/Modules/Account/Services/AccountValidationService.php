@@ -7,18 +7,18 @@ use App\Modules\Account\Exceptions\Validation\IncompatibleCurrencyException;
 use App\Modules\Account\Exceptions\Validation\InsufficientFundsException;
 use App\Modules\Account\Exceptions\Validation\InvalidAmountException;
 use App\Modules\Account\Structures\TransferParameters;
-use App\Modules\Rate\Exceptions\RateConversionException;
+use App\Modules\Rate\Exceptions\UnavailableRatesException;
 use App\Modules\Rate\Services\RateConversionService;
 use App\Modules\Transaction\Models\Transaction;
 
 readonly class AccountValidationService
 {
     public function __construct(
-        private RateConversionService $conversion,
+        private RateConversionService $conversionService,
     ) {}
 
     /**
-     * @throws AccountValidationException|RateConversionException
+     * @throws AccountValidationException|UnavailableRatesException
      */
     public function validate(Transaction | TransferParameters $transaction): void
     {
@@ -38,7 +38,7 @@ readonly class AccountValidationService
     }
 
     /**
-     * @throws RateConversionException
+     * @throws UnavailableRatesException
      */
     private function getConvertedSourceAmount(Transaction | TransferParameters $transaction): float
     {
@@ -46,6 +46,6 @@ readonly class AccountValidationService
             return $transaction->amount;
         }
 
-        return $this->conversion->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
+        return $this->conversionService->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
     }
 }

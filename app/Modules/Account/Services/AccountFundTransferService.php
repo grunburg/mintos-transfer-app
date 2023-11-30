@@ -3,7 +3,6 @@
 namespace App\Modules\Account\Services;
 
 use App\Modules\Account\Exceptions\AccountFundTransferException;
-use App\Modules\Rate\Exceptions\RateConversionException;
 use App\Modules\Rate\Exceptions\UnavailableRatesException;
 use App\Modules\Rate\Services\RateConversionService;
 use App\Modules\Transaction\Models\Transaction;
@@ -13,8 +12,8 @@ use Throwable;
 readonly class AccountFundTransferService
 {
     public function __construct(
-        private AccountFundBalanceService $balance,
-        private RateConversionService $conversion,
+        private AccountFundBalanceService $balanceService,
+        private RateConversionService $conversionService,
     ) {}
 
     /**
@@ -26,8 +25,8 @@ readonly class AccountFundTransferService
 
         try {
             $amount = $this->getConvertedTransferableAmount($transaction);
-            $this->balance->remove($transaction->from, $amount);
-            $this->balance->add($transaction->to, $amount);
+            $this->balanceService->remove($transaction->from, $amount);
+            $this->balanceService->add($transaction->to, $amount);
         } catch (Throwable $t) {
             DB::rollBack();
 
@@ -46,6 +45,6 @@ readonly class AccountFundTransferService
             return $transaction->amount;
         }
 
-        return $this->conversion->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
+        return $this->conversionService->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
     }
 }

@@ -5,7 +5,7 @@ namespace App\Modules\Transaction\Repositories;
 use App\Modules\Transaction\Exceptions\TransactionRepositoryException;
 use App\Modules\Transaction\Models\Transaction;
 
-class TransactionRepository
+readonly class TransactionRepository
 {
     /**
      * @throws TransactionRepositoryException

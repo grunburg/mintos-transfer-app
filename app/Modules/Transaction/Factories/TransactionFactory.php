@@ -6,7 +6,7 @@ use App\Modules\Account\Structures\TransferParameters;
 use App\Modules\Transaction\Enums\TransactionStatus;
 use App\Modules\Transaction\Models\Transaction;
 
-class TransactionFactory
+readonly class TransactionFactory
 {
     public static function create(TransferParameters $parameters)
     {

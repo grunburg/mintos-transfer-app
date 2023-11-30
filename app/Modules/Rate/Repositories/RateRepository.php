@@ -7,7 +7,7 @@ use App\Modules\Rate\Exceptions\RateRepositoryException;
 use App\Modules\Rate\Models\Rate;
 use Carbon\Carbon;
 
-class RateRepository
+readonly class RateRepository
 {
     /**
      * @throws RateRepositoryException
