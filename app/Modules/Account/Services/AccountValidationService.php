@@ -3,10 +3,11 @@
 namespace App\Modules\Account\Services;
 
 use App\Modules\Account\Exceptions\Validation\AccountValidationException;
+use App\Modules\Account\Exceptions\Validation\FundConversionException;
 use App\Modules\Account\Exceptions\Validation\IncompatibleCurrencyException;
 use App\Modules\Account\Exceptions\Validation\InsufficientFundsException;
 use App\Modules\Account\Exceptions\Validation\InvalidAmountException;
-use App\Modules\Account\Structures\TransferParameters;
+use App\Modules\Account\Structures\TransferAccountParameters;
 use App\Modules\Rate\Exceptions\UnavailableRatesException;
 use App\Modules\Rate\Services\RateConversionService;
 use App\Modules\Transaction\Models\Transaction;
@@ -18,34 +19,38 @@ readonly class AccountValidationService
     ) {}
 
     /**
-     * @throws AccountValidationException|UnavailableRatesException
+     * @throws AccountValidationException
      */
-    public function validate(Transaction | TransferParameters $transaction): void
+    public function validate(Transaction | TransferAccountParameters $request): void
     {
-        if ($transaction->amount <= 0) {
+        if (round($request->amount, 2) <= 0) {
             throw new InvalidAmountException();
         }
 
-        if ($transaction->currency !== $transaction->to->currency) {
+        if ($request->currency !== $request->to->currency) {
             throw new IncompatibleCurrencyException();
         }
 
         // Check if account has enough source funds.
-        $amount = $this->getConvertedSourceAmount($transaction);
-        if ($amount > $transaction->from->amount) {
+        $amount = $this->getConvertedSourceAmount($request);
+        if ($amount > $request->from->amount) {
             throw new InsufficientFundsException();
         }
     }
 
     /**
-     * @throws UnavailableRatesException
+     * @throws FundConversionException
      */
-    private function getConvertedSourceAmount(Transaction | TransferParameters $transaction): float
+    private function getConvertedSourceAmount(Transaction | TransferAccountParameters $request): float
     {
-        if ($transaction->currency === $transaction->from->currency) {
-            return $transaction->amount;
-        }
+        try {
+            if ($request->currency === $request->from->currency) {
+                return $request->amount;
+            }
 
-        return $this->conversionService->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
+            return $this->conversionService->convert($request->amount, $request->currency, $request->from->currency);
+        } catch (UnavailableRatesException $t) {
+            throw new FundConversionException(previous: $t);
+        }
     }
 }

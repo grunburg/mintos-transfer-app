@@ -29,10 +29,9 @@ readonly class RateRepository
 
     public function getRate(Currency $from, Currency $to, ?Carbon $date): ?Rate
     {
-        $rate = Rate::where([
-            'from' => $from->value,
-            'to' => $to->value,
-        ])->orderByDesc('date');
+        $rate = Rate::query()
+            ->where(['from' => $from->value, 'to' => $to->value])
+            ->orderByDesc('date');
 
         if ($date) {
             $rate->where(['date' => $date->format('Y-m-d')]);

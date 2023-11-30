@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\AccountTransactionsController;
+use App\Http\Controllers\AccountTransferController;
+use App\Http\Controllers\UserAccountsController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -12,7 +15,3 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-Route::get('/', function () {
-    return view('welcome');
-});

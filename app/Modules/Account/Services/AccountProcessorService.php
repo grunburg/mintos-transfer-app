@@ -5,11 +5,14 @@ namespace App\Modules\Account\Services;
 use App\Modules\Account\Exceptions\AccountException;
 use App\Modules\Account\Exceptions\AccountProcessorException;
 use App\Modules\Account\Exceptions\LockAcquirementException;
-use App\Modules\Account\Structures\TransferParameters;
+use App\Modules\Account\Exceptions\Validation\AccountValidationException;
+use App\Modules\Account\Jobs\AccountTransfer;
+use App\Modules\Account\Structures\TransferAccountParameters;
 use App\Modules\Transaction\Factories\TransactionFactory;
 use App\Modules\Transaction\Models\Transaction;
 use App\Modules\Transaction\Services\TransactionProcessorService;
 use Cache;
+use Log;
 use Throwable;
 
 readonly class AccountProcessorService
@@ -19,22 +22,34 @@ readonly class AccountProcessorService
     public function __construct(
         private AccountValidationService $validationService,
         private AccountFundTransferService $transferService,
-        private TransactionProcessorService $processor,
+        private TransactionProcessorService $transactionProcessor,
     ) {}
 
-    public function execute(): void
+    /**
+     * @throws AccountValidationException
+     */
+    public function execute(TransferAccountParameters $parameters): void
     {
+        try {
+            $this->validationService->validate($parameters);
 
+            AccountTransfer::dispatch($parameters);
+        } catch (Throwable $t) {
+            if ($t instanceof AccountValidationException) {
+                throw $t;
+            }
+
+            Log::error($t->getMessage());
+        }
     }
 
     /**
      * @throws AccountException
      */
-    public function process(TransferParameters $parameters): void
+    public function process(TransferAccountParameters $parameters): void
     {
         // Prevent any other queueable transaction task to interact with the source account.
         $lock = Cache::lock($parameters->from->id);
-
 
         try {
             if (!$lock->block(self::LOCK_SECONDS)) {
@@ -52,7 +67,7 @@ readonly class AccountProcessorService
         }
 
         try {
-            $this->processor->process($transaction, function (Transaction $transaction) {
+            $this->transactionProcessor->process($transaction, function (Transaction $transaction) {
                 $this->transferService->transfer($transaction);
             });
         } catch (Throwable $t) {

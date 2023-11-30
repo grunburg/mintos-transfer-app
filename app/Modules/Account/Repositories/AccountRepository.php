@@ -16,4 +16,11 @@ readonly class AccountRepository
             throw new AccountRepositoryException();
         }
     }
+
+    public function getById(int $id): ?Account
+    {
+        return Account::query()
+            ->where(['id' => $id])
+            ->first();
+    }
 }
