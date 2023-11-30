@@ -4,6 +4,7 @@ namespace App\Modules\Rate\Services;
 
 use App\Modules\Currency\Enums\Currency;
 use App\Modules\Rate\Exceptions\RateConversionException;
+use App\Modules\Rate\Exceptions\UnavailableRatesException;
 use App\Modules\Rate\Repositories\RateRepository;
 use Carbon\Carbon;
 
@@ -17,9 +18,9 @@ readonly class RateConversionService
     ) {}
 
     /**
-     * @throws RateConversionException
+     * @throws UnavailableRatesException
      */
-    public function convert(float $amount, Currency $from, Currency $to, Carbon $date = null): int
+    public function convert(float $amount, Currency $from, Currency $to, Carbon $date = null): float
     {
         $date = $date ?: now();
         $rate = $this->getCachedRate($from, $to, $date);
@@ -28,7 +29,7 @@ readonly class RateConversionService
     }
 
     /**
-     * @throws RateConversionException
+     * @throws UnavailableRatesException
      */
     private function getCachedRate(Currency $from, Currency $to, Carbon $date): float
     {
@@ -44,7 +45,7 @@ readonly class RateConversionService
     }
 
     /**
-     * @throws RateConversionException
+     * @throws UnavailableRatesException
      */
     private function getCalculatedRate(Currency $from, Currency $to, Carbon $date): float
     {
@@ -64,7 +65,7 @@ readonly class RateConversionService
     }
 
     /**
-     * @throws RateConversionException
+     * @throws UnavailableRatesException
      */
     private function getRate(Currency $base, Currency $target, Carbon $date): float
     {
@@ -76,6 +77,6 @@ readonly class RateConversionService
             return $rate->rate;
         }
 
-        throw new RateConversionException(RateConversionException::RATE_NOT_FOUND);
+        throw new UnavailableRatesException();
     }
 }

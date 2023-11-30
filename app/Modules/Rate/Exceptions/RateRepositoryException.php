@@ -4,5 +4,5 @@ namespace App\Modules\Rate\Exceptions;
 
 class RateRepositoryException extends RateException
 {
-    public const COULD_NOT_SAVE = 'Could not save rate entry.';
+    protected $message = 'Could not process the repository action.';
 }

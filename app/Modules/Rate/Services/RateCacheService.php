@@ -16,7 +16,7 @@ class RateCacheService
         Cache::set($this->key($from, $to, $date), $rate, self::CACHE_TTL);
     }
 
-    public function get(Currency $from, Currency $to, Carbon $date): ?int
+    public function get(Currency $from, Currency $to, Carbon $date): ?float
     {
         return Cache::get($this->key($from, $to, $date));
     }

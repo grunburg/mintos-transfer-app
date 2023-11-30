@@ -23,7 +23,7 @@ class RateRepository
         ]);
 
         if (!$rate->save()) {
-            throw new RateRepositoryException(RateRepositoryException::COULD_NOT_SAVE);
+            throw new RateRepositoryException();
         }
     }
 

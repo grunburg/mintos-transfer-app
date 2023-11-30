@@ -31,8 +31,6 @@ readonly class ExchangeRateService
 
         $response = $request->get('/historical');
 
-        dump($response);
-
         $body = (object) json_decode($response->body());
         if ($response->ok() && !$body?->success ?? false) {
             throw new RateRequestException($body?->error?->info ?? 'Failed to retrieve exchange rates.');
