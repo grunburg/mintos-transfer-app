@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Resources\AccountResource;
-use App\Http\Resources\UserResource;
+use App\Modules\Account\Resources\AccountResource;
 use App\Modules\User\Models\User;
+use App\Modules\User\Resources\UserResource;
 use Illuminate\Http\JsonResponse;
 
 class UserAccountsController extends Controller
