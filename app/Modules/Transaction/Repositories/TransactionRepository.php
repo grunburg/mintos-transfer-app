@@ -6,7 +6,7 @@ use App\Modules\Transaction\Exceptions\TransactionRepositoryException;
 use App\Modules\Transaction\Models\Transaction;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class TransactionRepository
+class TransactionRepository
 {
     /**
      * @throws TransactionRepositoryException

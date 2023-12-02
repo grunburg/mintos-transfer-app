@@ -9,11 +9,11 @@ use App\Modules\Transaction\Models\Transaction;
 use Illuminate\Support\Facades\DB;
 use Throwable;
 
-readonly class AccountFundTransferService
+class AccountFundTransferService
 {
     public function __construct(
-        private AccountFundBalanceService $balanceService,
-        private RateConversionService $conversionService,
+        readonly private AccountFundBalanceService $balanceService,
+        readonly private RateConversionService $conversionService,
     ) {}
 
     /**
@@ -41,10 +41,10 @@ readonly class AccountFundTransferService
      */
     private function getConvertedTransferableAmount(Transaction $transaction): float
     {
-        if ($transaction->currency === $transaction->from->currency) {
+        if ($transaction->from->currency === $transaction->currency) {
             return $transaction->amount;
         }
 
-        return $this->conversionService->convert($transaction->amount, $transaction->currency, $transaction->from->currency);
+        return $this->conversionService->convert($transaction->amount, $transaction->from->currency, $transaction->currency);
     }
 }

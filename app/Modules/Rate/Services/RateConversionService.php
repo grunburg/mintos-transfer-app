@@ -5,16 +5,17 @@ namespace App\Modules\Rate\Services;
 use App\Modules\Currency\Enums\Currency;
 use App\Modules\Rate\Exceptions\RateConversionException;
 use App\Modules\Rate\Exceptions\UnavailableRatesException;
+use App\Modules\Rate\Models\Rate;
 use App\Modules\Rate\Repositories\RateRepository;
 use Carbon\Carbon;
 
-readonly class RateConversionService
+class RateConversionService
 {
     private const PRECISION = 2;
 
     public function __construct(
-        private RateRepository $repository,
-        private RateCacheService $cache,
+        readonly private RateRepository $repository,
+        readonly private RateCacheService $cache,
     ) {}
 
     /**
@@ -54,7 +55,7 @@ readonly class RateConversionService
         }
 
         $now = now();
-        if ($date->gte($now)) {
+        if ($date->gt($now)) {
             return $this->getCalculatedRate($from, $to, $now);
         }
 

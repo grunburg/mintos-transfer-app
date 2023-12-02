@@ -8,7 +8,7 @@ use App\Modules\Rate\Repositories\RateRepository;
 use App\Modules\Rate\Structures\RateResult;
 use Throwable;
 
-abstract readonly class BaseImportService implements RateImportContract
+abstract class BaseImportService implements RateImportContract
 {
     public function __construct(
         protected RateRepository $repository,

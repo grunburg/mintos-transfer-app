@@ -5,7 +5,7 @@ namespace App\Modules\Account\Structures;
 use App\Modules\Account\Models\Account;
 use App\Modules\Currency\Enums\Currency;
 
-class TransferAccountParameters
+class AccountTransferParameters
 {
     public function __construct(
        public Account $from,

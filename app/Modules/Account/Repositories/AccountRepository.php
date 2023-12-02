@@ -5,7 +5,7 @@ namespace App\Modules\Account\Repositories;
 use App\Modules\Account\Exceptions\AccountRepositoryException;
 use App\Modules\Account\Models\Account;
 
-readonly class AccountRepository
+class AccountRepository
 {
     /**
      * @throws AccountRepositoryException

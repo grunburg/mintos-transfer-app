@@ -7,10 +7,10 @@ use App\Modules\Account\Exceptions\Validation\InsufficientFundsException;
 use App\Modules\Account\Models\Account;
 use App\Modules\Account\Repositories\AccountRepository;
 
-readonly class AccountFundBalanceService
+class AccountFundBalanceService
 {
     public function __construct(
-        private AccountRepository $repository,
+        readonly private AccountRepository $repository,
     ) {}
 
     /**

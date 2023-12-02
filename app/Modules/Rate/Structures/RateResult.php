@@ -5,7 +5,7 @@ namespace App\Modules\Rate\Structures;
 use App\Modules\Currency\Enums\Currency;
 use Carbon\Carbon;
 
-readonly class RateResult
+class RateResult
 {
     public function __construct(
         public Currency $source,

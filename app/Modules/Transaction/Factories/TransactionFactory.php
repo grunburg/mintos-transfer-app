@@ -2,13 +2,13 @@
 
 namespace App\Modules\Transaction\Factories;
 
-use App\Modules\Account\Structures\TransferAccountParameters;
+use App\Modules\Account\Structures\AccountTransferParameters;
 use App\Modules\Transaction\Enums\TransactionStatus;
 use App\Modules\Transaction\Models\Transaction;
 
-readonly class TransactionFactory
+class TransactionFactory
 {
-    public static function create(TransferAccountParameters $parameters)
+    public static function create(AccountTransferParameters $parameters)
     {
         $transaction = Transaction::make([
             'amount' => $parameters->amount,

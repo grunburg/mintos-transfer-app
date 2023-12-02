@@ -6,9 +6,6 @@ use App\Modules\Account\Models\Account;
 use App\Modules\Currency\Enums\Currency;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
-/**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Modules\Account\Models\Account>
- */
 class AccountFactory extends Factory
 {
     protected $model = Account::class;

@@ -9,7 +9,7 @@ use App\Modules\Rate\Services\ExchangeRateService;
 use Log;
 use Throwable;
 
-readonly class ExchangeRateImportService extends BaseImportService implements RateImportContract
+class ExchangeRateImportService extends BaseImportService implements RateImportContract
 {
     /** @var Currency[]  */
     private const IMPORTABLE_CURRENCIES = [

@@ -7,7 +7,7 @@ use App\Modules\Account\Exceptions\AccountProcessorException;
 use App\Modules\Account\Exceptions\LockAcquirementException;
 use App\Modules\Account\Exceptions\Validation\AccountValidationException;
 use App\Modules\Account\Jobs\AccountTransfer;
-use App\Modules\Account\Structures\TransferAccountParameters;
+use App\Modules\Account\Structures\AccountTransferParameters;
 use App\Modules\Transaction\Factories\TransactionFactory;
 use App\Modules\Transaction\Models\Transaction;
 use App\Modules\Transaction\Services\TransactionProcessorService;
@@ -15,20 +15,20 @@ use Cache;
 use Log;
 use Throwable;
 
-readonly class AccountProcessorService
+class AccountProcessorService
 {
     private const LOCK_SECONDS = 10;
 
     public function __construct(
-        private AccountValidationService $validationService,
-        private AccountFundTransferService $transferService,
-        private TransactionProcessorService $transactionProcessor,
+        readonly private AccountValidationService $validationService,
+        readonly private AccountFundTransferService $transferService,
+        readonly private TransactionProcessorService $transactionProcessor,
     ) {}
 
     /**
      * @throws AccountValidationException
      */
-    public function execute(TransferAccountParameters $parameters): void
+    public function execute(AccountTransferParameters $parameters): void
     {
         try {
             $this->validationService->validate($parameters);
@@ -46,7 +46,7 @@ readonly class AccountProcessorService
     /**
      * @throws AccountException
      */
-    public function process(TransferAccountParameters $parameters): void
+    public function process(AccountTransferParameters $parameters): void
     {
         // Prevent any other queueable transaction task to interact with the source account.
         $lock = Cache::lock($parameters->from->id);

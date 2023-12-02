@@ -6,10 +6,10 @@ use App\Modules\Account\Models\Account;
 use App\Modules\Transaction\Repositories\TransactionRepository;
 use Illuminate\Database\Eloquent\Collection;
 
-readonly class TransactionService
+class TransactionService
 {
     public function __construct(
-        private TransactionRepository $repository,
+        readonly private TransactionRepository $repository,
     ) {}
 
     /**

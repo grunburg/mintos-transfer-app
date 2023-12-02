@@ -8,7 +8,7 @@ use App\Modules\Rate\Structures\RateResult;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
-readonly class ExchangeRateResultFactory implements RateResultFactoryContract
+class ExchangeRateResultFactory implements RateResultFactoryContract
 {
     public static function create(object $data): RateResult
     {

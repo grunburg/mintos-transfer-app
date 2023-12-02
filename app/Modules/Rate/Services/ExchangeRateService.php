@@ -10,7 +10,7 @@ use App\Modules\Rate\Structures\RateResult;
 use Carbon\Carbon;
 use Illuminate\Support\Arr;
 
-readonly class ExchangeRateService
+class ExchangeRateService
 {
     /**
      * @param Carbon $date

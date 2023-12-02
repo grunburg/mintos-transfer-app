@@ -8,10 +8,10 @@ use App\Modules\Transaction\Repositories\TransactionRepository;
 use Log;
 use Throwable;
 
-readonly class TransactionExceptionHandler
+class TransactionExceptionHandler
 {
     public function __construct(
-       private TransactionRepository $repository,
+        readonly private TransactionRepository $repository,
     ) {}
 
     public function handle(Transaction $transaction, ?string $message = null): void

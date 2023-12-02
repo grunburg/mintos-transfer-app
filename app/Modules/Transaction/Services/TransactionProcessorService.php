@@ -12,11 +12,11 @@ use App\Modules\Transaction\Repositories\TransactionRepository;
 use App\Modules\Transaction\Services\Handlers\TransactionExceptionHandler;
 use Throwable;
 
-readonly class TransactionProcessorService
+class TransactionProcessorService
 {
     public function __construct(
-        private TransactionExceptionHandler $exceptionHandler,
-        private TransactionRepository $repository,
+        readonly private TransactionExceptionHandler $exceptionHandler,
+        readonly private TransactionRepository $repository,
     ) {}
 
     /**
