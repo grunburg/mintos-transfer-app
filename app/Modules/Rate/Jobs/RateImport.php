@@ -13,8 +13,14 @@ class RateImport implements ShouldQueue
 {
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
+    private const IMPORTS = [
+        ExchangeRateImportService::class,
+    ];
+
     public function handle(): void
     {
-        app(ExchangeRateImportService::class)->import();
+        foreach (self::IMPORTS as $import) {
+            app($import)->import();
+        }
     }
 }
