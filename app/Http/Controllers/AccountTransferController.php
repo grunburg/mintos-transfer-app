@@ -24,7 +24,7 @@ class AccountTransferController extends Controller
                'message' => 'We have successfully queued the requested transaction.',
             ]);
         } catch (AccountValidationException $t) {
-            return response()->json(['error' =>  $t->getMessage()]);
+            return response()->json(['error' => $t->getMessage() ?? 'Unknown issue was thrown.']);
         }
     }
 }
