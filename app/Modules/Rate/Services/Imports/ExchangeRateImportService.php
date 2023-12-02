@@ -32,7 +32,7 @@ readonly class ExchangeRateImportService extends BaseImportService implements Ra
     {
         try {
             foreach (self::IMPORTABLE_CURRENCIES as $currency) {
-                $result = $this->service->rates(now(), $currency, self::IMPORTABLE_CURRENCIES);
+                $result = $this->service->getRates(now(), $currency, self::IMPORTABLE_CURRENCIES);
                 $this->save($result);
             }
         } catch (Throwable $t) {

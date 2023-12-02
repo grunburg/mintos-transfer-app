@@ -19,7 +19,7 @@ readonly class ExchangeRateService
      * @return RateResult
      * @throws RateRequestException
      */
-    public function rates(Carbon $date, Currency $source, array $currencies): RateResult
+    public function getRates(Carbon $date, Currency $source, array $currencies): RateResult
     {
         $currencies = Arr::map($currencies, fn(Currency $currency) => $currency->value);
 
