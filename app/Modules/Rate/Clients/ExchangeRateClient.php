@@ -2,17 +2,16 @@
 
 namespace App\Modules\Rate\Clients;
 
-use Illuminate\Http\Client\Factory;
+use App\Modules\Rate\Contracts\RateClientContract;
 use Illuminate\Http\Client\PendingRequest;
 use Illuminate\Support\Facades\Config;
+use Illuminate\Support\Facades\Http;
 
-class ExchangeRateClient extends PendingRequest
+class ExchangeRateClient implements RateClientContract
 {
-    public function __construct(Factory $factory = null, $middleware = [])
+    public function client(): PendingRequest
     {
-        parent::__construct($factory, $middleware);
-
-        $this->baseUrl(Config::get('rates.xrt.url'));
-        $this->withQueryParameters(['access_key' => Config::get('rates.xrt.key')]);
+        return Http::baseUrl(Config::get('rates.xrt.url'))
+            ->withQueryParameters(['access_key' => Config::get('rates.xrt.key')]);
     }
 }

@@ -10,7 +10,7 @@ use Illuminate\Support\Arr;
 
 class ExchangeRateResultFactory implements RateResultFactoryContract
 {
-    public static function create(object $data): RateResult
+    public function create(object $data): RateResult
     {
         $rates = Arr::map((array) $data->quotes, function (float $value, string $key) use ($data) {
             $currency = substr($key, 3);

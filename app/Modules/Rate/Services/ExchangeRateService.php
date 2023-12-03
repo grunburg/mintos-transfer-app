@@ -12,6 +12,10 @@ use Illuminate\Support\Arr;
 
 class ExchangeRateService
 {
+    public function __construct(
+        readonly private ExchangeRateResultFactory $factory,
+    ) {}
+
     /**
      * @param Carbon $date
      * @param Currency $source
@@ -23,7 +27,8 @@ class ExchangeRateService
     {
         $currencies = Arr::map($currencies, fn(Currency $currency) => $currency->value);
 
-        $request = (new ExchangeRateClient())->withQueryParameters([
+        $client = (new ExchangeRateClient())->client();
+        $request = $client->withQueryParameters([
             'date' => $date->format('Y-m-d'),
             'currencies' => Arr::join($currencies, ','),
             'source' => $source->value,
@@ -36,6 +41,6 @@ class ExchangeRateService
             throw new RateRequestException($body?->error?->info ?? 'Failed to retrieve exchange rates.');
         }
 
-        return ExchangeRateResultFactory::create($body);
+        return $this->factory->create($body);
     }
 }
