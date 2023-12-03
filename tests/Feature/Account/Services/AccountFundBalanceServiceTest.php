@@ -2,11 +2,11 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace Tests\Feature\Accounts\Services;
+namespace Tests\Feature\Account\Services;
 
 use App\Modules\Account\Exceptions\Validation\InsufficientFundsException;
 use App\Modules\Account\Services\AccountFundBalanceService;
-use Tests\Feature\Accounts\Helpers\AccountHelper;
+use Tests\Feature\Account\Helpers\AccountHelper;
 use Tests\TestCase;
 
 class AccountFundBalanceServiceTest extends TestCase

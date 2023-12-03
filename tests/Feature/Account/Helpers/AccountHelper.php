@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature\Accounts\Helpers;
+namespace Tests\Feature\Account\Helpers;
 
 use App\Modules\Account\Models\Account;
 use App\Modules\User\Models\User;

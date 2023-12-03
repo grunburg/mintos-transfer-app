@@ -2,14 +2,14 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace Tests\Feature\Accounts\Services;
+namespace Tests\Feature\Account\Services;
 
 use App\Modules\Account\Services\AccountProcessorService;
 use App\Modules\Account\Structures\AccountTransferParameters;
 use App\Modules\Currency\Enums\Currency;
 use App\Modules\Transaction\Enums\TransactionStatus;
 use App\Modules\Transaction\Models\Transaction;
-use Tests\Feature\Accounts\Helpers\AccountHelper;
+use Tests\Feature\Account\Helpers\AccountHelper;
 use Tests\TestCase;
 
 class AccountProcessorServiceTest extends TestCase

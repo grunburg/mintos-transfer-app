@@ -2,14 +2,14 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace Tests\Feature\Accounts\Services;
+namespace Tests\Feature\Account\Services;
 
 use App\Modules\Account\Services\AccountFundTransferService;
 use App\Modules\Currency\Enums\Currency;
 use Database\Seeders\TestRateDatabaseSeeder;
 use Illuminate\Support\Carbon;
-use Tests\Feature\Accounts\Helpers\AccountHelper;
-use Tests\Feature\Accounts\Helpers\TransactionHelper;
+use Tests\Feature\Account\Helpers\AccountHelper;
+use Tests\Feature\Account\Helpers\TransactionHelper;
 use Tests\TestCase;
 
 class AccountFundTransferServiceTest extends TestCase

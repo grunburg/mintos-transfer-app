@@ -2,10 +2,10 @@
 
 /** @noinspection PhpUnhandledExceptionInspection */
 
-namespace Tests\Feature\Accounts\Repositories;
+namespace Tests\Feature\Account\Repositories;
 
 use App\Modules\Account\Repositories\AccountRepository;
-use Tests\Feature\Accounts\Helpers\AccountHelper;
+use Tests\Feature\Account\Helpers\AccountHelper;
 use Tests\TestCase;
 
 class AccountRepositoryTest extends TestCase
