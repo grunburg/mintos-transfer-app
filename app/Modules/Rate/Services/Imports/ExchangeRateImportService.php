@@ -6,7 +6,7 @@ use App\Modules\Currency\Enums\Currency;
 use App\Modules\Rate\Contracts\RateImportContract;
 use App\Modules\Rate\Repositories\RateRepository;
 use App\Modules\Rate\Services\ExchangeRateService;
-use Log;
+use Illuminate\Support\Facades\Log;
 use Throwable;
 
 class ExchangeRateImportService extends BaseImportService implements RateImportContract
@@ -18,7 +18,7 @@ class ExchangeRateImportService extends BaseImportService implements RateImportC
 
     public function __construct(
         RateRepository $repository,
-        private ExchangeRateService $service,
+        private readonly ExchangeRateService $service,
     ) {
         parent::__construct($repository);
     }
