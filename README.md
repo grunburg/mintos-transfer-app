@@ -86,8 +86,7 @@ GET  : /api/account/{account_id}/transactions?limit=10&offset=0
 GET  : /api/user/{user_id}/accounts
 POST : /api/transfer (from_account_id: int, to_account_id: int, amount: int, curreny: string])
 ```
-Or get the [Postman](https://www.postman.com/) collection [here](https://interstellar-crescent-465206.postman.co/workspace/Mintos~ca226b1e-56d7-4f5e-861f-ca230a0002ef/collection/9286277-7a341c2e-78d1-48b4-a6c7-754af961ca1d?action=share&creator=9286277)
-& import it to your own client.
+Or get the [Postman](https://www.postman.com/) collection [here](https://interstellar-crescent-465206.postman.co/workspace/Mintos~ca226b1e-56d7-4f5e-861f-ca230a0002ef/collection/9286277-7a341c2e-78d1-48b4-a6c7-754af961ca1d?action=share&creator=9286277).
 
 
 ## Additional Notes 🗒️
