@@ -37,8 +37,11 @@ class TransactionProcessorService
 
             $this->success($transaction);
         } catch (Throwable $t) {
-            $message = $t instanceof AccountValidationException ? $t->getMessage() : null;
-            $this->exceptionHandler->handle($transaction, $message);
+            // Only handle existing transaction.
+            if ($transaction->id) {
+                $message = $t instanceof AccountValidationException ? $t->getMessage() : null;
+                $this->exceptionHandler->handle($transaction, $message);
+            }
 
             throw new TransactionProcessorException(previous: $t);
         }
