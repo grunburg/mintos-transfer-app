@@ -17,6 +17,7 @@ yarn-error.log
 /.fleet
 /.idea
 /.vscode
+/.run
 
 # Project exclude paths
 /storage/app/
