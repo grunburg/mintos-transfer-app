@@ -1,66 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Mintos Fund Transfer
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A fund transfer REST application as a home assignment for Mintos
+utilizing [Laravel](https://laravel.com/) framework.
 
-## About Laravel
+## Technologies & Tools Used 🛠️
+- Laravel (Easy backend set-up, provides necessary project toolset to quickly kickstart an application)
+- PHPUnit (Code coverage with Feature (Integration) & Unit tests)
+- Redis (For storing short term data to improve the performance of the code execution)
+- Supervisor (For running dispatched tasks and cron-jobs)
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Tools
+- Docker / Sail 🐳
+- PHPStorm
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+## Prerequisites
+Before we install & start-up the application, please make sure you have installed [Docker](https://www.docker.com/).
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Installation
+1. Go to your preferred project directory and clone this repository & navigate to it.
+```bash
+git clone https://github.com/grunburg/mintos-transfter-app.git && cd mintos-transfter-app
+```
 
-## Learning Laravel
+2. Copy .env.example file as .env
+```bash
+cp .env.example .env
+```
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+3. Create an account on [Exchangerate](https://exchangerate.host/) and get your own API access key. Then add it to your
+.env variable.
+```bash
+XRT_ACCESS_KEY=e59f5d0e5a766d307e4357baaad0e863
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+4. Spin up a temporary docker container to install necessary dependencies.
+```bash
+docker run --rm \
+    -u "$(id -u):$(id -g)" \
+    -v $(pwd):/var/www/html \
+    -w /var/www/html \
+    laravelsail/php82-composer:latest \
+    composer install --ignore-platform-reqs
+```
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains over 2000 video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+5. Build the Sail configuration.
+```bash
+./vendor/bin/sail build --no-cache
+```
 
-## Laravel Sponsors
+6. Bring up the application containers.
+```bash
+./vendor/bin/sail up -d
+```
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+7. Generate a new Laravel app key and run the migrations.
+```bash
+./vendor/bin/sail artisan key:generate
+./vendor/bin/sail artisan migrate
+```
 
-### Premium Partners
+8. Seed the database with fake users and to accounts to play with.
+```bash
+./vendor/bin/sail artisan db:seed
+```
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+9. Import the rates by launching a command (otherwise, the rates are generated daily by scheduled job).
+```bash
+./vendor/bin/sail artisan rate:import
+```
 
-## Contributing
+10. Looks like you're done, now get the endpoints and play around on [localhost:8000/api](http://localhost:8000/api). 🚀
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## Tests
+You can launch the Feature (Integration) & Unit tests by these commands:
+```bash
+./vendor/bin/sail artisan test --testsuite=Unit
+./vendor/bin/sail artisan test --testsuite=Feature
+```
 
-## Code of Conduct
+## Endpoints
+Application supports three different endpoints.
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```
+GET  : /api/account/{account_id}/transactions?limit=10&offset=0
+GET  : /api/user/{user_id}/accounts
+POST : /api/transfer (from_account_id: int, to_account_id: int, amount: int, curreny: string])
+```
+Or get the [Postman](https://www.postman.com/) collection [here](https://api.postman.com/collections/9286277-7a341c2e-78d1-48b4-a6c7-754af961ca1d?access_key=PMAT-01HGRXXTSC2797YPV6XC8RWYPW)
+& import it to your own client.
 
-## Security Vulnerabilities
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## Additional Notes 🗒️
+Current implementation of rate import supports only single rate service but can be easily expanded on due to the
+architecture & the currencies are: EUR, USD, GBP, AUD, CHF.
 
-## License
+Additionally, for the fund transfer implementation, I used supervisor, a background screen service which powers the
+jobs & scheduled jobs (i.e. daily rate import). Jobs are used because if something fails due to a bug in code, they can
+later be re-run & also solves http request timeout if some kind of external fraud-check service is added.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Rates are resilient to 3rd party service unavailability due to them being imported daily within the app and clever
+fallback mechanisms if daily import fails.
